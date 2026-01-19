@@ -3,364 +3,513 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Al Midmar | Business Profile</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    
+    <title>Al Midmar Adv. Design</title>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts - Added weight 600 for Semi Bold -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+
     <style>
+        :root {
+            /* Updated Colors for Dark Mode */
+            --primary-text: #ffffff;       /* Was Black, now White */
+            --secondary-text: #b0b0b0;     /* Lightened grey for readability on dark */
+            --card-bg: #ffffff;            /* Keep cards white for contrast */
+            --accent-color: #f0f0f0;
+            --transition-speed: 0.3s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #f3f4f6;
-            background-image: 
-                radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
-                radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
-                radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
-            background-attachment: fixed;
-            min-height: 100vh;
-            overflow: hidden;
+            font-family: 'Poppins', sans-serif;
+            /* Off-Black Gradient */
+            background: linear-gradient(135deg, #2b2b2b 0%, #080808 100%);
+            background-attachment: fixed; /* Ensures gradient covers full scroll */
+            color: var(--primary-text);
+            overflow-x: hidden;
+            height: 100vh;
+            overflow-y: hidden; 
         }
 
-        body.loaded {
-            overflow: auto;
-        }
-
+        /* --- NEW LOADING SCREEN (Dark Theme) --- */
         #loader {
             position: fixed;
-            inset: 0;
-            background: #0f172a;
-            z-index: 100;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Matches body gradient */
+            background: linear-gradient(135deg, #2b2b2b 0%, #080808 100%);
+            z-index: 9999;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
-            transition: opacity 0.8s ease-in-out, visibility 0.8s;
+            align-items: center;
+            flex-direction: column;
+            transition: opacity 0.8s ease-out, visibility 0.8s;
         }
 
-        .loader-icon-container {
+        /* Loader Icon Container */
+        .loader-icons {
             position: relative;
             width: 120px;
             height: 120px;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
         }
 
-        .loader-item {
+        /* Generic Icon Style */
+        .tool-icon {
+            position: absolute;
+            opacity: 0;
+            transform: scale(0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5); /* Darker shadow */
+            font-weight: 900;
+            font-size: 2.5rem;
+        }
+
+        /* 1. Illustrator (Ai) Style */
+        .icon-ai {
+            width: 80px;
+            height: 80px;
+            background-color: #330000;
+            color: #ff9a00;
+            border: 2px solid #5a4a4a;
+            animation: cycle-tool 4s linear infinite;
+            animation-delay: 0s;
+        }
+
+        /* 2. Photoshop (Ps) Style */
+        .icon-ps {
+            width: 80px;
+            height: 80px;
+            background-color: #001e36;
+            color: #31a8ff;
+            border: 2px solid #004a80;
+            animation: cycle-tool 4s linear infinite;
+            animation-delay: 0.8s;
+        }
+
+        /* 3. Art Brush Style */
+        .icon-brush {
+            width: 90px;
+            height: 90px;
+            background-color: #fff;
+            color: #333;
+            font-size: 3rem;
+            border: none;
+            box-shadow: none; 
+            animation: cycle-tool 4s linear infinite;
+            animation-delay: 1.6s;
+        }
+
+        /* 4. 3D Signage Style */
+        .icon-3d {
+            width: 80px;
+            height: 80px;
+            background-color: #2c3e50;
+            color: #f1c40f;
+            font-size: 2.5rem;
+            border: 2px solid #34495e;
+            animation: cycle-tool 4s linear infinite;
+            animation-delay: 2.4s;
+        }
+        
+        /* 5. CAD Style */
+        .icon-cad {
+            width: 90px;
+            height: 90px;
+            background-color: #fff;
+            color: #e74c3c;
+            font-size: 3rem;
+            border: none;
+            box-shadow: none;
+            animation: cycle-tool 4s linear infinite;
+            animation-delay: 3.2s;
+        }
+
+        /* Animation Keyframes */
+        @keyframes cycle-tool {
+            0% { opacity: 0; transform: scale(0.5) rotate(-10deg); z-index: 1;}
+            5% { opacity: 1; transform: scale(1) rotate(0deg); z-index: 10;}
+            15% { opacity: 1; transform: scale(1) rotate(0deg); z-index: 10;}
+            20% { opacity: 0; transform: scale(1.2) rotate(5deg); z-index: 1;}
+            100% { opacity: 0; }
+        }
+
+        .loader-hide {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* --- MAIN CONTAINER --- */
+        .container {
+            max-width: 600px; 
+            margin: 0 auto;
+            padding: 40px 20px;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            opacity: 0;
-            transform: scale(0.95);
-            transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
-            position: absolute;
+            opacity: 0; 
+            transition: opacity 1s ease 0.5s;
         }
 
-        .loader-item.active {
+        .content-visible {
             opacity: 1;
-            transform: scale(1);
         }
 
-        .loader-item.exit {
-            opacity: 0;
-            transform: scale(1.05);
+        /* --- HEADER --- */
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            width: 100%;
         }
 
-        .loading-text {
-            margin-top: 1rem;
-            color: rgba(255, 255, 255, 0.4);
-            letter-spacing: 0.3em;
-            font-size: 0.75rem;
-            font-weight: 600;
+        .logo-placeholder {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 20px auto;
+            object-fit: cover;
+            display: block;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            font-size: 2rem;
+            line-height: 1.2;
             text-transform: uppercase;
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            letter-spacing: -0.5px;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: .5; }
+        .company-name {
+            font-weight: 600; /* Changed from 900 to Semi Bold */
+            color: var(--primary-text); /* White */
+            display: block;
         }
 
-        .fade-in-up {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
-        
-        body.loaded .fade-in-up {
-            opacity: 1;
-            transform: translateY(0);
+        .company-suffix {
+            font-weight: 400; 
+            color: var(--secondary-text); /* Light Grey */
+            font-size: 1.5rem;
+            display: block;
+            margin-top: 5px;
         }
 
-        .delay-100 { transition-delay: 0.1s; }
-        .delay-200 { transition-delay: 0.2s; }
-        .delay-300 { transition-delay: 0.3s; }
-        .delay-400 { transition-delay: 0.4s; }
-
-        .glass-card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+        /* --- INFINITE SCROLL SECTION --- */
+        .projects-section {
+            width: 100%;
+            margin-bottom: 50px;
+            overflow: hidden;
+            border-top: 1px solid #333; /* Darker border */
+            border-bottom: 1px solid #333;
+            padding: 30px 0;
         }
 
-        ::-webkit-scrollbar {
-            width: 6px;
+        .section-title {
+            text-align: center;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--secondary-text);
+            margin-bottom: 25px;
+            font-weight: 700;
         }
-        ::-webkit-scrollbar-track {
-            background: transparent;
+
+        .scroll-container {
+            display: flex;
+            width: 100%;
+            overflow: hidden;
+            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
         }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 3px;
+
+        .scroll-track {
+            display: flex;
+            gap: 40px;
+            animation: scroll-left-to-right 25s linear infinite;
+            padding-left: 40px; 
         }
-        
-        @keyframes shine {
+
+        .brand-item {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #333;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--card-bg); /* White cards */
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            height: 80px; 
+            min-width: 150px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .brand-item img {
+            max-height: 100%;
+            max-width: 100%;
+            width: auto;
+            height: 50px; 
+            object-fit: contain;
+        }
+
+        /* Animation: Left to Right */
+        @keyframes scroll-left-to-right {
+            0% {
+                transform: translateX(-50%);
+            }
             100% {
-                left: 125%;
+                transform: translateX(0);
             }
         }
-        .group-hover\:animate-shine:hover {
-            animation: shine 1s;
+
+        /* --- CONTACT LINKS --- */
+        .connect-section {
+            width: 100%;
+            margin-bottom: 40px;
         }
+
+        .links-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            background: var(--card-bg); /* White cards */
+            border: none;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #000; /* Text inside card remains black */
+            transition: all var(--transition-speed) ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .contact-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.4);
+            background-color: #fff;
+        }
+
+        .contact-link i {
+            font-size: 1.5rem;
+            margin-right: 15px;
+            width: 30px;
+            text-align: center;
+        }
+
+        .contact-text {
+            font-weight: 500;
+        }
+
+        .fa-instagram { color: #E1306C; }
+        .fa-whatsapp { color: #25D366; }
+        .fa-envelope { color: #007bff; }
+
+        /* --- MAP SECTION --- */
+        .map-section {
+            width: 100%;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            background: #222;
+        }
+
+        .map-container {
+            position: relative;
+            padding-bottom: 75%; /* Aspect Ratio 4:3 */
+            height: 0;
+            overflow: hidden;
+        }
+
+        .map-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100% !important;
+            height: 100% !important;
+            filter: invert(90%) hue-rotate(180deg); /* Optional: Makes map dark mode */
+        }
+
+        footer {
+            margin-top: 30px; 
+            font-size: 12px; 
+            color: #666; 
+            text-align: center;
+        }
+
     </style>
 </head>
-<body class="flex items-center justify-center p-4 sm:p-8">
+<body>
 
+    <!-- Loading Screen -->
     <div id="loader">
-        <div class="loader-icon-container" id="loader-icons"></div>
-        <div class="loading-text">Loading</div>
-    </div>
-
-    <div class="w-full max-w-[420px] relative">
-        
-        <div class="glass-card rounded-[2.5rem] shadow-2xl overflow-hidden relative z-10 flex flex-col">
-            
-            <div class="h-32 bg-gradient-to-r from-slate-900 to-slate-800 relative fade-in-up">
-                <div class="absolute top-4 right-4 text-white/80 cursor-pointer hover:text-white transition" onclick="copyLink()" title="Copy Link">
-                    <i class="fa-solid fa-share-nodes text-xl"></i>
-                </div>
+        <div class="loader-icons">
+            <!-- 1. Illustrator -->
+            <div class="tool-icon icon-ai">Ai</div>
+            <!-- 2. Photoshop -->
+            <div class="tool-icon icon-ps">Ps</div>
+            <!-- 3. Art Brush -->
+            <div class="tool-icon icon-brush">
+                <i class="fa-solid fa-paintbrush"></i>
             </div>
-
-            <div class="px-6 pb-8 -mt-16 flex flex-col items-center text-center fade-in-up delay-100">
-                <div class="relative">
-                    <div class="w-32 h-32 rounded-full p-1 bg-white shadow-lg overflow-hidden flex items-center justify-center">
-                        <img src="Untitled-1-01.jpg" 
-                             onerror="this.src='https://ui-avatars.com/api/?name=Al+Midmar&background=0f172a&color=fff&size=128&font-size=0.4'"
-                             alt="Logo" 
-                             class="w-full h-full object-cover rounded-full">
-                    </div>
-                    <div class="absolute bottom-2 right-2 bg-green-500 w-6 h-6 rounded-full border-4 border-white"></div>
-                </div>
-
-                <h1 class="mt-4 text-2xl font-bold text-gray-900">Al Midmar</h1>
-                <p class="text-sm font-medium text-gray-500 mt-1">Adv. Design</p>
-                
-                <a href="https://maps.app.goo.gl/F3fs9QNSBnATrxiUA" target="_blank" class="flex items-center gap-1 mt-2 text-xs text-gray-400 bg-gray-100 px-3 py-1 rounded-full hover:bg-gray-200 transition-colors group">
-                    <i class="fa-solid fa-location-dot group-hover:text-red-500 transition-colors"></i>
-                    <span>Sharjah, UAE</span>
-                </a>
+            <!-- 4. 3D Signage -->
+            <div class="tool-icon icon-3d">
+                <i class="fa-solid fa-cube"></i>
             </div>
-
-            <div class="px-6 grid grid-cols-2 gap-3 mb-6 fade-in-up delay-200">
-                <a href="https://www.instagram.com/al.midmar/" target="_blank" class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center group hover:border-pink-200 transition-all hover:shadow-md cursor-pointer min-h-[110px]">
-                    <div class="flex items-center gap-2 mb-1">
-                        <i class="fa-brands fa-instagram text-pink-600 text-xl"></i>
-                        <span class="text-sm font-bold text-gray-800 tracking-tight">Instagram</span>
-                    </div>
-                    <span class="text-[10px] uppercase tracking-wider text-gray-400 font-semibold mb-1">Followers</span>
-                    <span class="text-xl font-bold text-gray-900" id="insta-count">...</span>
-                </a>
-
-                <a href="https://x.com/almidmar" target="_blank" class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center group hover:border-gray-300 transition-all hover:shadow-md cursor-pointer min-h-[110px]">
-                    <div class="flex items-center gap-2 mb-1">
-                        <i class="fa-brands fa-x-twitter text-black text-xl"></i>
-                        <span class="text-sm font-bold text-gray-800 tracking-tight">Twitter</span>
-                    </div>
-                    <span class="text-[10px] uppercase tracking-wider text-gray-400 font-semibold mb-1">Followers</span>
-                    <span class="text-xl font-bold text-gray-900" id="x-count">...</span>
-                </a>
-            </div>
-
-            <div class="px-6 mb-6 fade-in-up delay-300 w-full flex justify-center">
-                <a href="https://wa.me/971557412771" target="_blank" class="w-full bg-[#25D366] hover:bg-[#20bd5a] text-white py-4 rounded-2xl flex items-center justify-center gap-3 shadow-lg shadow-green-200 transition-all transform hover:scale-[1.02] active:scale-95 group relative overflow-hidden">
-                    <div class="absolute top-0 -left-full w-1/2 h-full bg-white/20 skew-x-12 group-hover:animate-shine"></div>
-                    
-                    <i class="fa-brands fa-whatsapp text-3xl"></i>
-                    <div class="text-left leading-tight">
-                        <div class="font-bold text-lg">Chat on WhatsApp</div>
-                        <div class="text-xs text-white/90">Replies typically in 5 mins</div>
-                    </div>
-                    <i class="fa-solid fa-chevron-right absolute right-5 opacity-60 group-hover:translate-x-1 transition-transform"></i>
-                </a>
-            </div>
-
-            <div class="px-6 space-y-3 mb-8 fade-in-up delay-300">
-                <a href="https://midmaradv.com" target="_blank" class="block bg-white hover:bg-gray-50 border border-gray-200 text-gray-800 py-3.5 px-4 rounded-xl flex items-center justify-between transition-all hover:shadow-md group">
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
-                            <i class="fa-solid fa-globe"></i>
-                        </div>
-                        <span class="font-semibold">Visit Website</span>
-                    </div>
-                    <i class="fa-solid fa-arrow-up-right-from-square text-gray-300 group-hover:text-blue-500 transition-colors"></i>
-                </a>
-
-                <a href="mailto:prajil@midmaradv.com" class="block bg-white hover:bg-gray-50 border border-gray-200 text-gray-800 py-3.5 px-4 rounded-xl flex items-center justify-between transition-all hover:shadow-md group">
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-full bg-purple-50 flex items-center justify-center text-purple-600">
-                            <i class="fa-solid fa-envelope"></i>
-                        </div>
-                        <span class="font-semibold">Send Email</span>
-                    </div>
-                    <i class="fa-solid fa-arrow-right text-gray-300 group-hover:text-purple-500 transition-colors"></i>
-                </a>
-            </div>
-
-            <div class="px-6 mb-8 fade-in-up delay-400">
-                <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 ml-1">Our Location</h3>
-                <div class="w-full h-48 rounded-2xl overflow-hidden shadow-inner border border-gray-200 relative group">
-                    <iframe 
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d57736.00947720239!2d55.378964!3d25.346255!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5f4f03936997%3A0x507a82c49c01f655!2sSharjah!5e0!3m2!1sen!2sae!4v1709282000000!5m2!1sen!2sae" 
-                        width="100%" 
-                        height="100%" 
-                        style="border:0; filter: grayscale(20%) contrast(1.1);" 
-                        allowfullscreen="" 
-                        loading="lazy">
-                    </iframe>
-                    <a href="https://maps.app.goo.gl/F3fs9QNSBnATrxiUA" target="_blank" class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
-                        <span class="bg-white text-gray-900 px-4 py-2 rounded-full text-xs font-bold shadow-lg opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-                            View Directions <i class="fa-solid fa-location-arrow ml-1"></i>
-                        </span>
-                    </a>
-                </div>
-            </div>
-
-            <div class="bg-gray-50 py-4 text-center border-t border-gray-100">
-                <p class="text-xs text-gray-400">© 2024 Al Midmar Adv. Design</p>
+            <!-- 5. CAD -->
+            <div class="tool-icon icon-cad">
+                <i class="fa-solid fa-compass-drafting"></i>
             </div>
         </div>
-        
-        <div class="fixed top-20 -left-20 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-        <div class="fixed top-40 -right-20 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
     </div>
 
-    <div id="toast" class="fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-6 py-3 rounded-full shadow-xl opacity-0 transition-opacity duration-300 pointer-events-none z-50 text-sm font-medium">
-        Link copied to clipboard!
+    <!-- Main Content -->
+    <div class="container" id="main-content">
+        
+        <!-- Header -->
+        <header>
+            <img src="https://i.ibb.co/TqY3tsL0/Untitled-1-01.jpg" alt="Al Midmar Logo" class="logo-placeholder">
+            
+            <h1>
+                <span class="company-name">Al Midmar</span>
+                <span class="company-suffix">Adv. Design</span>
+            </h1>
+        </header>
+
+        <!-- Infinite Scroll Projects -->
+        <section class="projects-section">
+            <h2 class="section-title">Projects</h2>
+            
+            <div class="scroll-container">
+                <!-- Track contains two sets of the same items for seamless looping -->
+                <div class="scroll-track">
+                    <!-- Set 1 -->
+                    <div class="brand-item">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg" alt="Oracle">
+                    </div>
+                    <div class="brand-item">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b4/Bel_%28Unternehmen%29_logo.svg" alt="Bel">
+                    </div>
+                    <div class="brand-item">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/37/Aster_DM_Healthcare_Logo.svg" alt="Aster">
+                    </div>
+                    <div class="brand-item">
+                        <img src="https://i.ibb.co/jZ1Br2qt/Asset-1.png" alt="PitStop UAE">
+                    </div>
+                    <div class="brand-item">
+                        <img src="https://i.ibb.co/4ntxR2JY/Asset-1.png" alt="Dollar Car Rental">
+                    </div>
+                    <div class="brand-item">
+                        <img src="https://cdn.thepharmaletter.com/convert/files/2025/06/234ca320-4a8b-11f0-8488-d9c201992a15-arcera.png/r%5Bwidth%5D=320/234ca320-4a8b-11f0-8488-d9c201992a15-arcera.webp" alt="Arcera">
+                    </div>
+                    <div class="brand-item">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Filli-cafe-logo.svg" alt="Filli Cafe">
+                    </div>
+                    <div class="brand-item">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Ocean_Network_Express_logo.svg" alt="ONE Ocean">
+                    </div>
+                    
+                    <!-- Set 2 (Duplicate for Loop) -->
+                    <div class="brand-item">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg" alt="Oracle">
+                    </div>
+                    <div class="brand-item">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b4/Bel_%28Unternehmen%29_logo.svg" alt="Bel">
+                    </div>
+                    <div class="brand-item">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/37/Aster_DM_Healthcare_Logo.svg" alt="Aster">
+                    </div>
+                    <div class="brand-item">
+                        <img src="https://i.ibb.co/jZ1Br2qt/Asset-1.png" alt="PitStop UAE">
+                    </div>
+                    <div class="brand-item">
+                        <img src="https://i.ibb.co/4ntxR2JY/Asset-1.png" alt="Dollar Car Rental">
+                    </div>
+                    <div class="brand-item">
+                        <img src="https://cdn.thepharmaletter.com/convert/files/2025/06/234ca320-4a8b-11f0-8488-d9c201992a15-arcera.png/r%5Bwidth%5D=320/234ca320-4a8b-11f0-8488-d9c201992a15-arcera.webp" alt="Arcera">
+                    </div>
+                    <div class="brand-item">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Filli-cafe-logo.svg" alt="Filli Cafe">
+                    </div>
+                    <div class="brand-item">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Ocean_Network_Express_logo.svg" alt="ONE Ocean">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Connect Us -->
+        <section class="connect-section">
+            <h2 class="section-title">Connect Us</h2>
+            <div class="links-wrapper">
+                <a href="https://www.instagram.com/al.midmar/" target="_blank" class="contact-link">
+                    <i class="fa-brands fa-instagram"></i>
+                    <span class="contact-text">@al.midmar</span>
+                </a>
+                <a href="https://wa.me/971557412771" target="_blank" class="contact-link">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <span class="contact-text">+971 55 741 2771</span>
+                </a>
+                <a href="mailto:prajil@midmar.com" class="contact-link">
+                    <i class="fa-regular fa-envelope"></i>
+                    <span class="contact-text">prajil@midmar.com</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Map -->
+        <section class="map-section">
+            <div class="map-container">
+                <iframe 
+                    src="https://maps.google.com/maps?q=Al+Midmar+Adv+Design&output=embed" 
+                    width="600" 
+                    height="450" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </section>
+
+        <footer>
+            Made with ❤️ Al Midmar
+        </footer>
+
     </div>
 
     <script>
-        const mockData = {
-            instagramFollowers: 1250,
-            xFollowers: 340
-        };
-
-        const loadItems = [
-            { icon: 'fa-paintbrush', color: 'pink' },
-            { icon: 'fa-pen-nib', color: 'orange' },
-            { icon: 'fa-image', color: 'blue' },
-            { icon: 'fa-draw-polygon', color: 'green' },
-            { icon: 'fa-cube', color: 'purple' }
-        ];
-
-        function runLoader() {
-            const container = document.getElementById('loader-icons');
-            const duration = 800;
-            
-            function showItem(index) {
-                if (index >= loadItems.length) {
-                    finishLoading();
-                    return;
-                }
-
-                const item = loadItems[index];
-                const el = document.createElement('div');
-                el.className = `loader-item active`;
-                el.innerHTML = `
-                    <div class="w-20 h-20 rounded-full bg-gray-800 flex items-center justify-center shadow-2xl shadow-${item.color}-500/30 ring-1 ring-white/10">
-                        <i class="fa-solid ${item.icon} text-3xl text-${item.color}-500"></i>
-                    </div>
-                `;
-                
-                container.appendChild(el);
-
-                setTimeout(() => {
-                    el.classList.remove('active');
-                    el.classList.add('exit');
-                    setTimeout(() => el.remove(), 600);
-                    showItem(index + 1);
-                }, duration);
-            }
-
-            showItem(0);
-        }
-
-        function finishLoading() {
+        // Loading Logic
+        window.addEventListener('load', () => {
             const loader = document.getElementById('loader');
-            loader.style.opacity = '0';
-            loader.style.visibility = 'hidden';
+            const content = document.getElementById('main-content');
             
-            document.body.classList.add('loaded');
-
+            // Wait 3.5 seconds to let the tool cycle complete at least once
             setTimeout(() => {
-                const instaEl = document.getElementById("insta-count");
-                const xEl = document.getElementById("x-count");
-                animateValue(instaEl, 0, mockData.instagramFollowers, 1500);
-                animateValue(xEl, 0, mockData.xFollowers, 1500);
-            }, 300);
-        }
-
-        document.addEventListener("DOMContentLoaded", () => {
-           runLoader();
-        });
-
-        function formatCompactNumber(number) {
-            return Intl.NumberFormat('en-US', {
-                notation: "compact",
-                maximumFractionDigits: 1
-            }).format(number);
-        }
-
-        function animateValue(obj, start, end, duration) {
-            let startTimestamp = null;
-            const step = (timestamp) => {
-                if (!startTimestamp) startTimestamp = timestamp;
-                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-                const currentVal = Math.floor(progress * (end - start) + start);
+                loader.classList.add('loader-hide');
+                content.classList.add('content-visible');
                 
-                if (progress < 1) {
-                    obj.innerHTML = formatCompactNumber(currentVal);
-                    window.requestAnimationFrame(step);
-                } else {
-                    obj.innerHTML = formatCompactNumber(end);
-                }
-            };
-            window.requestAnimationFrame(step);
-        }
-
-        function copyLink() {
-            const dummyLink = "https://midmaradv.com/connect";
-            const textArea = document.createElement("textarea");
-            textArea.value = dummyLink;
-            document.body.appendChild(textArea);
-            textArea.select();
-            
-            try {
-                document.execCommand('copy');
-                showToast();
-            } catch (err) {
-                console.error(err);
-            }
-            document.body.removeChild(textArea);
-        }
-
-        function showToast() {
-            const toast = document.getElementById('toast');
-            toast.classList.remove('opacity-0');
-            setTimeout(() => {
-                toast.classList.add('opacity-0');
-            }, 2000);
-        }
+                // Allow scrolling again
+                document.body.style.overflowY = 'auto';
+            }, 3500); 
+        });
     </script>
 </body>
 </html>
