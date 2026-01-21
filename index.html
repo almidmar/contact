@@ -1,15 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Al Midmar Contact Card</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- CSS VARIABLES & THEMING --- */
+        :root {
+            /* Default: Dark Mode Variables */
+            --bg-gradient-start: #1a1a1a;
+            --bg-gradient-end: #000000;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --accent-gold: #D4AF37;
+            --section-bg: rgba(0,0,0,0.2);
+            --shadow-color: rgba(0,0,0,0.5);
+            --scroll-mask: linear-gradient(to right, #131313, transparent 15%, transparent 85%, #050505);
+            
+            /* Logo Visibility Control */
+            --logo-light-display: none;
+            --logo-dark-display: block;
+        }
 
-  <!DOCTYPE html>
-  <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Enhance Projects and Contact Sections</title>
-    </head>
+        /* LIGHT MODE OVERRIDES (Triggered by System Settings) */
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg-gradient-start: #f8f9fa;
+                --bg-gradient-end: #e9ecef;
+                --card-bg: rgba(255, 255, 255, 0.7);
+                --card-border: rgba(0, 0, 0, 0.05);
+                --text-primary: #1a1a1a;
+                --text-secondary: #666666;
+                --accent-gold: #b8962e; /* Slightly darker gold for contrast */
+                --section-bg: rgba(0,0,0,0.03);
+                --shadow-color: rgba(0,0,0,0.1);
+                --scroll-mask: linear-gradient(to right, #f8f9fa, transparent 15%, transparent 85%, #e9ecef);
 
-    <body>
-      <div id="root"></div>
-      <script type="module" src="/src/main.tsx"></script>
-    </body>
-  </html>
-  
+                /* Swap Logos */
+                --logo-light-display: block;
+                --logo-dark-display: none;
+            }
+        }
+
+        body {
+            background-color: var(--bg-gradient-end);
+            color: var(--text-primary);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            margin: 0;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Mobile Container */
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+            min-height: 100vh;
+            background: linear-gradient(180deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            position: relative;
+            padding-bottom: 40px;
+            box-shadow: 0 0 30px var(--shadow-color);
+            transition: background 0.3s ease;
+        }
+
+        /* --- Header Section --- */
+        .profile-header {
+            padding: 40px 20px 30px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-container {
+            width: 100%;
+            max-width: 280px;
+            /* height: 120px; Removed fixed height to let image scale naturally */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .main-logo {
+            max-width: 100%;
+            max-height: 120px; 
+            object-fit: contain;
+            /* Smooth transition if themes switch */
+            transition: opacity 0.3s ease; 
+        }
+
+        /* Theme Specific Logo Classes */
+        .logo-light { display: var(--logo-light-display); }
+        .logo-dark { display: var(--logo-dark-display); }
+
+        /* --- PROJECTS SECTION (Infinite Scroll) --- */
+        .projects-section {
+            width: 100%;
+            margin: 20px 0 40px 0;
+            overflow: hidden;
+            position: relative;
+            padding: 20px 0;
+            border-top: 1px solid var(--card-border);
+            border-bottom: 1px solid var(--card-border);
+            background: var(--section-bg);
+        }
+        
+        /* Fade Gradients for Sides */
+        .projects-section::before,
+        .projects-section::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            width: 15%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+        .projects-section::before {
+            left: 0;
+            background: linear-gradient(to right, var(--bg-gradient-start), transparent);
+        }
+        .projects-section::after {
+            right: 0;
+            background: linear-gradient(to left, var(--bg-gradient-end), transparent);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--accent-gold);
+            margin-bottom: 25px;
+            font-weight: 700;
+            opacity: 0.9;
+        }
+
+        .scroll-container {
+            display: flex;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .scroll-track {
+            display: flex;
+            gap: 30px;
+            animation: scroll-left 35s linear infinite; 
+            padding-left: 30px; 
+            width: max-content;
+        }
+
+        .brand-item {
+            height: 80px; 
+            min-width: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent; 
+            border: none;
+            padding: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .brand-item:hover {
+            transform: translateY(-2px) scale(1.05);
+        }
+
+        .brand-item img {
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain;
+            /* Adaptive brightness for logos based on theme */
+            filter: brightness(0.9);
+            opacity: 0.9;
+            transition: all 0.3s ease;
+        }
+        
+        /* In light mode, ensure logos aren't too bright/washed out */
+        @media (prefers-color-scheme: light) {
+            .brand-item img { filter: brightness(1); opacity: 1; }
+        }
+
+        .brand-item:hover img {
+            filter: brightness(1.1);
+            opacity: 1;
+        }
+
+        @keyframes scroll-left {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); } 
+        }
+
+        /* --- CONTACT LINKS --- */
+        .connect-section {
+            padding: 0 20px;
+            margin-bottom: 40px;
+        }
+
+        .links-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .contact-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 6px var(--shadow-color);
+        }
+
+        .contact-btn:hover {
+            background: rgba(255, 255, 255, 0.1); /* Works for dark mode */
+            transform: scale(1.02);
+            border-color: var(--accent-gold);
+            box-shadow: 0 10px 20px var(--shadow-color);
+        }
+        
+        /* Light mode hover adjustment */
+        @media (prefers-color-scheme: light) {
+            .contact-btn:hover { background: #ffffff; }
+        }
+
+        .btn-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .btn-label {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .btn-sub {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        /* Icon Container */
+        .icon-box {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        /* Specific Button Styles & Animations */
+        
+        /* 1. Call Button */
+        .btn-call .icon-box { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+        .btn-call:hover .icon-box i { animation: ring 1s infinite ease-in-out; }
+
+        /* 2. Instagram Button */
+        .btn-insta .icon-box { background: rgba(236, 72, 153, 0.2); color: #f472b6; }
+        .btn-insta:hover .icon-box i { animation: bounce 1s infinite; }
+
+        /* 3. Mail Button */
+        .btn-mail .icon-box { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+        .btn-mail:hover .icon-box i { animation: slide 1.5s infinite; }
+
+        /* 4. WhatsApp Button (Featured) */
+        .btn-whatsapp {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            border: none;
+        }
+        /* Force white text on WhatsApp button regardless of theme */
+        .btn-whatsapp .btn-label, .btn-whatsapp .btn-sub { color: white !important; }
+        .btn-whatsapp .icon-box { background: rgba(255,255,255,0.2); color: white; }
+        .btn-whatsapp:hover .icon-box i { animation: pulse-grow 1.5s infinite; }
+
+        /* 5. Add Contact Button */
+        .btn-save {
+            background: #fff;
+            color: #000;
+            justify-content: center;
+            font-weight: 700;
+            border: none;
+        }
+        /* In light mode, inverse this button to be dark so it stands out */
+        @media (prefers-color-scheme: light) {
+            .btn-save { background: #1a1a1a; color: #fff; }
+            .btn-save:hover { background: #333; }
+        }
+        
+        .btn-save:hover {
+            background: #e0e0e0;
+            transform: translateY(-2px);
+        }
+        .btn-save i { margin-right: 10px; }
+
+        /* Map Section */
+        .location-section {
+            padding: 0 20px;
+            margin-bottom: 40px;
+        }
+        
+        .map-container {
+            width: 100%;
+            height: 250px;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 10px 30px var(--shadow-color);
+        }
+        
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            /* Map filter: In dark mode, invert colors. In light mode, normal colors. */
+            filter: grayscale(100%) invert(92%) contrast(83%);
+        }
+        
+        @media (prefers-color-scheme: light) {
+            .map-container iframe {
+                filter: none; /* Normal colorful map for light mode */
+            }
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            padding-bottom: 20px;
+        }
+        .heart {
+            color: #ef4444;
+            display: inline-block;
+            animation: beat 1s infinite;
+        }
+
+        /* Animations */
+        @keyframes ring {
+            0% { transform: rotate(0deg); }
+            10%, 30% { transform: rotate(15deg); }
+            20%, 40% { transform: rotate(-15deg); }
+            50% { transform: rotate(0deg); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        @keyframes slide {
+            0% { transform: translateX(-3px); opacity: 0.7; }
+            50% { transform: translateX(3px); opacity: 1; }
+            100% { transform: translateX(-3px); opacity: 0.7; }
+        }
+
+        @keyframes pulse-grow {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes beat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <!-- Header -->
+        <header class="profile-header">
+            <div class="logo-container">
+                <!-- LIGHT THEME LOGO (Shows in Light Mode) -->
+                <!-- Use for White Background -->
+                <a href="https://imgbb.com/" class="logo-light">
+                    <img src="https://i.ibb.co/DfCkxdKF/Lighttheme.png" alt="Al Midmar - Light Theme" class="main-logo" border="0">
+                </a>
+
+                <!-- DARK THEME LOGO (Shows in Dark Mode) -->
+                <!-- Use for Dark Background -->
+                <a href="https://imgbb.com/" class="logo-dark">
+                    <img src="https://i.ibb.co/FbHZfPFL/Darktheme.png" alt="Al Midmar - Dark Theme" class="main-logo" border="0">
+                </a>
+            </div>
+        </header>
+
+        <!-- Projects Infinite Scroll -->
+        <div class="projects-section">
+            <div class="section-title">Our Partners & Projects</div>
+            <div class="scroll-container">
+                <div class="scroll-track">
+                    <!-- Set 1 (7 Items) -->
+                    <!-- Bel -->
+                    <div class="brand-item"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b4/Bel_%28Unternehmen%29_logo.svg" alt="Bel"></div>
+                    <!-- Filli Cafe -->
+                    <div class="brand-item"><img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Filli-cafe-logo.svg" alt="Filli Cafe"></div>
+                    <!-- Arcera -->
+                    <div class="brand-item"><img src="https://cdn.thepharmaletter.com/convert/files/2025/06/234ca320-4a8b-11f0-8488-d9c201992a15-arcera.png/r%5Bwidth%5D=320/234ca320-4a8b-11f0-8488-d9c201992a15-arcera.webp" alt="Arcera"></div>
+                    <!-- Aster -->
+                    <div class="brand-item"><img src="https://upload.wikimedia.org/wikipedia/commons/3/37/Aster_DM_Healthcare_Logo.svg" alt="Aster"></div>
+                    <!-- Dollar Car Rentals -->
+                    <div class="brand-item"><img src="https://i.ibb.co/4ntxR2JY/Asset-1.png" alt="Dollar Car Rentals"></div>
+                    <!-- ONE Ocean -->
+                    <div class="brand-item"><img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Ocean_Network_Express_logo.svg" alt="ONE Ocean"></div>
+                    <!-- PitStop UAE -->
+                    <div class="brand-item"><img src="https://www.pitstopauto.ae/_next/image?url=%2Fimages%2FlightLogo.svg&w=256&q=75" alt="PitStop"></div>
+
+                    <!-- Set 2 (Duplicate for Loop - 7 Items) -->
+                    <div class="brand-item"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b4/Bel_%28Unternehmen%29_logo.svg" alt="Bel"></div>
+                    <div class="brand-item"><img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Filli-cafe-logo.svg" alt="Filli Cafe"></div>
+                    <div class="brand-item"><img src="https://cdn.thepharmaletter.com/convert/files/2025/06/234ca320-4a8b-11f0-8488-d9c201992a15-arcera.png/r%5Bwidth%5D=320/234ca320-4a8b-11f0-8488-d9c201992a15-arcera.webp" alt="Arcera"></div>
+                    <div class="brand-item"><img src="https://upload.wikimedia.org/wikipedia/commons/3/37/Aster_DM_Healthcare_Logo.svg" alt="Aster"></div>
+                    <div class="brand-item"><img src="https://i.ibb.co/4ntxR2JY/Asset-1.png" alt="Dollar Car Rentals"></div>
+                    <div class="brand-item"><img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Ocean_Network_Express_logo.svg" alt="ONE Ocean"></div>
+                    <div class="brand-item"><img src="https://www.pitstopauto.ae/_next/image?url=%2Fimages%2FlightLogo.svg&w=256&q=75" alt="PitStop"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Buttons -->
+        <section class="connect-section">
+            <div class="links-wrapper">
+                
+                <!-- 1. Call Button -->
+                <a href="tel:+971557412771" class="contact-btn btn-call">
+                    <div class="btn-content">
+                        <div class="icon-box"><i class="fas fa-phone"></i></div>
+                        <div>
+                            <div class="btn-label">Call Now</div>
+                            <div class="btn-sub">+971 55 741 2771</div>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-right text-gray-500"></i>
+                </a>
+
+                <!-- 2. Instagram Button -->
+                <a href="https://www.instagram.com/al.midmar/" target="_blank" class="contact-btn btn-insta">
+                    <div class="btn-content">
+                        <div class="icon-box"><i class="fab fa-instagram"></i></div>
+                        <div>
+                            <div class="btn-label">Instagram</div>
+                            <div class="btn-sub">@al.midmar</div>
+                        </div>
+                    </div>
+                    <i class="fas fa-external-link-alt text-gray-500 text-xs"></i>
+                </a>
+
+                <!-- 3. Mail Button -->
+                <a href="mailto:prajil@midmar.com" class="contact-btn btn-mail">
+                    <div class="btn-content">
+                        <div class="icon-box"><i class="fas fa-envelope"></i></div>
+                        <div>
+                            <div class="btn-label">Email Us</div>
+                            <div class="btn-sub">prajil@midmar.com</div>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-right text-gray-500"></i>
+                </a>
+
+                <!-- 4. WhatsApp Button -->
+                <a href="https://wa.me/971557412771" target="_blank" class="contact-btn btn-whatsapp">
+                    <div class="btn-content">
+                        <div class="icon-box"><i class="fab fa-whatsapp"></i></div>
+                        <div>
+                            <div class="btn-label">WhatsApp</div>
+                            <div class="btn-sub">Chat with us directly</div>
+                        </div>
+                    </div>
+                    <i class="fas fa-comment-dots text-white"></i>
+                </a>
+
+                <!-- 5. Add to Contact Button -->
+                <!-- Note: This triggers the JavaScript function below -->
+                <button onclick="downloadVCard()" class="contact-btn btn-save">
+                    <i class="fas fa-user-plus"></i> Add to Contacts
+                </button>
+
+            </div>
+        </section>
+
+        <!-- Location Section -->
+        <section class="location-section">
+            <div class="section-title" style="text-align: left; margin-bottom: 15px;">Visit Our Office</div>
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3433.557539574303!2d55.43492537506985!3d25.292472627835693!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5f007b57c70b%3A0x47f0476467d53a6e!2sAL%20MIDMAR%20ADV.%20DESIGN!5e1!3m2!1sen!2sae!4v1769001454840!5m2!1sen!2sae" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            Made with <span class="heart">❤️</span> Abhiram
+        </footer>
+
+    </div>
+
+    <!-- Script for vCard Generation -->
+    <script>
+        function downloadVCard() {
+            // vCard 3.0 Standard format
+            const vcard = `BEGIN:VCARD
+VERSION:3.0
+N:;Prajil;;;
+FN:Prajil
+ORG:Al Midmar Adv. Design
+TITLE:
+TEL;TYPE=CELL:+971557412771
+EMAIL;TYPE=WORK:prajil@midmar.com
+URL:https://www.instagram.com/al.midmar/
+END:VCARD`;
+
+            const blob = new Blob([vcard], { type: "text/vcard" });
+            const url = URL.createObjectURL(blob);
+            
+            const newLink = document.createElement('a');
+            newLink.download = "Prajil_AlMidmar.vcf";
+            newLink.textContent = "Download vCard";
+            newLink.href = url;
+            
+            newLink.click();
+            
+            // Clean up
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
