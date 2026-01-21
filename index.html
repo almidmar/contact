@@ -86,8 +86,7 @@
 
         .logo-container {
             width: 100%;
-            max-width: 280px;
-            /* height: 120px; Removed fixed height to let image scale naturally */
+            max-width: 180px; /* Reduced width */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -96,7 +95,7 @@
 
         .main-logo {
             max-width: 100%;
-            max-height: 120px; 
+            max-height: 80px; /* Reduced height */
             object-fit: contain;
             /* Smooth transition if themes switch */
             transition: opacity 0.3s ease; 
@@ -278,15 +277,15 @@
         
         /* 1. Call Button */
         .btn-call .icon-box { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
-        .btn-call:hover .icon-box i { animation: ring 1s infinite ease-in-out; }
+        .btn-call .icon-box i { animation: ring 2s infinite ease-in-out; }
 
         /* 2. Instagram Button */
         .btn-insta .icon-box { background: rgba(236, 72, 153, 0.2); color: #f472b6; }
-        .btn-insta:hover .icon-box i { animation: bounce 1s infinite; }
+        .btn-insta .icon-box i { animation: bounce 2s infinite; }
 
         /* 3. Mail Button */
         .btn-mail .icon-box { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
-        .btn-mail:hover .icon-box i { animation: slide 1.5s infinite; }
+        .btn-mail .icon-box i { animation: slide 3s infinite; }
 
         /* 4. WhatsApp Button (Featured) */
         .btn-whatsapp {
@@ -296,27 +295,9 @@
         /* Force white text on WhatsApp button regardless of theme */
         .btn-whatsapp .btn-label, .btn-whatsapp .btn-sub { color: white !important; }
         .btn-whatsapp .icon-box { background: rgba(255,255,255,0.2); color: white; }
-        .btn-whatsapp:hover .icon-box i { animation: pulse-grow 1.5s infinite; }
+        .btn-whatsapp .icon-box i { animation: pulse-grow 2s infinite; }
 
-        /* 5. Add Contact Button */
-        .btn-save {
-            background: #fff;
-            color: #000;
-            justify-content: center;
-            font-weight: 700;
-            border: none;
-        }
-        /* In light mode, inverse this button to be dark so it stands out */
-        @media (prefers-color-scheme: light) {
-            .btn-save { background: #1a1a1a; color: #fff; }
-            .btn-save:hover { background: #333; }
-        }
-        
-        .btn-save:hover {
-            background: #e0e0e0;
-            transform: translateY(-2px);
-        }
-        .btn-save i { margin-right: 10px; }
+        /* 5. Add Contact Button REMOVED */
 
         /* Map Section */
         .location-section {
@@ -497,12 +478,6 @@
                     <i class="fas fa-comment-dots text-white"></i>
                 </a>
 
-                <!-- 5. Add to Contact Button -->
-                <!-- Note: This triggers the JavaScript function below -->
-                <button onclick="downloadVCard()" class="contact-btn btn-save">
-                    <i class="fas fa-user-plus"></i> Add to Contacts
-                </button>
-
             </div>
         </section>
 
@@ -521,34 +496,5 @@
 
     </div>
 
-    <!-- Script for vCard Generation -->
-    <script>
-        function downloadVCard() {
-            // vCard 3.0 Standard format
-            const vcard = `BEGIN:VCARD
-VERSION:3.0
-N:;Prajil;;;
-FN:Prajil
-ORG:Al Midmar Adv. Design
-TITLE:
-TEL;TYPE=CELL:+971557412771
-EMAIL;TYPE=WORK:prajil@midmar.com
-URL:https://www.instagram.com/al.midmar/
-END:VCARD`;
-
-            const blob = new Blob([vcard], { type: "text/vcard" });
-            const url = URL.createObjectURL(blob);
-            
-            const newLink = document.createElement('a');
-            newLink.download = "Prajil_AlMidmar.vcf";
-            newLink.textContent = "Download vCard";
-            newLink.href = url;
-            
-            newLink.click();
-            
-            // Clean up
-            URL.revokeObjectURL(url);
-        }
-    </script>
 </body>
 </html>
